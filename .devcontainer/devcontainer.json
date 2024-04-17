@@ -1,0 +1,55 @@
+{
+  "name": "${localWorkspaceFolderBasename}",
+  "dockerComposeFile": "./docker/docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // 改行コード
+        "files.eol": "\n",
+        // 保存時にフォーマット
+        "editor.formatOnSave": true,
+        // デフォルトフォーマッターをprettierに設定
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        // prettier設定
+        "prettier.printWidth": 200,
+        // jsonはvscodeのフォーマッターを利用
+        "[jsonc]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        },
+        // typescriptのSDKは現在ディレクトリのものを指定
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "launch": {
+          "version": "0.2.0",
+          "configurations": [
+            {
+              "type": "node",
+              "request": "launch",
+              "name": "ts debug",
+              "skipFiles": [
+                "<node_internals>/**"
+              ],
+              "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+              "runtimeArgs": [],
+              "program": "${workspaceFolder}/src/server.ts"
+              // "program": "${file}"
+            }
+          ]
+        }
+      },
+      "extensions": [
+        // vscode japanese language pack
+        "MS-CEINTL.vscode-language-pack-ja",
+        // prettier
+        "esbenp.prettier-vscode",
+        // git
+        "mhutchie.git-graph",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        // rest-client
+        "humao.rest-client"
+      ]
+    }
+  }
+}

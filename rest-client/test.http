@@ -1,0 +1,12 @@
+### get-test
+GET http://localhost:3000/test/get-test
+Content-Type: application/json
+
+### post-test
+POST http://localhost:3000/test/post-test
+Content-Type: application/json
+
+{
+    "id" : 1,
+    "name" : "なまえ"
+}

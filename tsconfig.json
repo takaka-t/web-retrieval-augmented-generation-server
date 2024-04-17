@@ -1,0 +1,32 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "env.d.ts"
+  ],
+  "compilerOptions": {
+    // どのバージョンのjsにトランスパイルするか https://node.green/
+    "target": "es2022",
+    // どのようなモジュールコードを生成するか
+    "module": "commonjs",
+    // defaultをエクスポートしていないCommonJS形式のモジュールをESModulesでデフォルトインポートできるようにするか
+    "esModuleInterop": true,
+    // import時にファイルパスの文字列で大文字小文字を区別するかどうか
+    "forceConsistentCasingInFileNames": true,
+    // すべての型チェックオプションを有効にするか
+    "strict": true,
+    // 型定義ファイルのチェックをスキップする
+    "skipLibCheck": true,
+    // トランスパイル時のjsファイル出力先
+    "outDir": "./dist",
+    // トランスパイル時のディレクトリ構造の参考先
+    "rootDir": "./src",
+    // コンパイル後のJSファイルからコメントを削除するか
+    "removeComments": true,
+    // トランスパイルされたjsファイルのソースマップファイルを作成するか
+    "sourceMap": false,
+    // モジュールと連携して動作するデコレータの型メタデータの出力の実験的サポートを有効にするか
+    "emitDecoratorMetadata": true,
+    // TC39 標準化プロセスより前のバージョンのデコレータの実験的サポートを有効にするか
+    "experimentalDecorators": true,
+  }
+}

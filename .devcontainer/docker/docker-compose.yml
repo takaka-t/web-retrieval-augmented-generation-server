@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../../:/workspace:cached
+    tty: true
+    networks:
+      - web-retrieval-augmented-generation-network
+networks:
+  web-retrieval-augmented-generation-network:
+    external: true
