@@ -8,6 +8,23 @@ services:
     tty: true
     networks:
       - web-retrieval-augmented-generation-network
+  db:
+    image: mariadb:11.3.2-jammy
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: web_rag_db
+      MARIADB_USER: web_rag_db_user
+      MARIADB_PASSWORD: web_rag_db_password
+      TZ: "Asia/Tokyo"
+    volumes:
+      # - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/restore:/docker-entrypoint-initdb.d
+    tty: true
+    networks:
+      - web-retrieval-augmented-generation-network
+
 networks:
   web-retrieval-augmented-generation-network:
     external: true

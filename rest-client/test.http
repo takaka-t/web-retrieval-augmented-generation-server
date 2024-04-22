@@ -10,3 +10,7 @@ Content-Type: application/json
     "id" : 1,
     "name" : "なまえ"
 }
+
+### database-test
+GET http://localhost:3000/test/database-test
+Content-Type: application/json

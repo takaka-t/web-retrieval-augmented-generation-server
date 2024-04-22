@@ -1,6 +1,6 @@
 # web-retrieval-augmented-generation-server
 
-## 開発準備
+## 開発手順
 
 ### コンテナ起動前
 
@@ -21,6 +21,12 @@ F5 で起動
 呼び出しは rest-client 拡張機能を利用
 rest-client フォルダに http ファイルを作成して行う
 
+## データベース backup
+
+db コンテナ内で以下コマンド実行
+mariadb-dump --databases web_rag_db -u root -p > /docker-entrypoint-initdb.d/backup.sql
+コンテナ作成時に実行されるもので git 管理する
+
 ## memo
 
 デバッグ時の保存時に自動再起動できる ts-node-dev や nodemon は不可を考慮して今回は使わない
@@ -28,3 +34,9 @@ rest-client フォルダに http ファイルを作成して行う
 ts-node で --env-file がまだサポートされていないため dotenv で env 読み込む
 
 テストのために jest を導入したい
+
+本番実行時は console.XXX 系をファイルにも出力するようにする
+
+共通処理などの import を絶対パスで行いたい
+
+データベース接続などで using を利用したい

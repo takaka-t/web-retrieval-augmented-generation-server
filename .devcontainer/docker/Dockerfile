@@ -9,3 +9,6 @@ RUN apt update
 
 # git
 RUN apt-get install -y git
+
+# ping
+RUN apt install -y iputils-ping net-tools

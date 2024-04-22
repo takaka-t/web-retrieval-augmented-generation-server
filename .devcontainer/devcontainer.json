@@ -30,8 +30,9 @@
               "skipFiles": [
                 "<node_internals>/**"
               ],
-              "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
               "runtimeArgs": [],
+              "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+              "args": [],
               "program": "${workspaceFolder}/src/server.ts"
               // "program": "${file}"
             }
