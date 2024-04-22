@@ -27,7 +27,7 @@ createDatabaseConnectionPool();
 
 // router
 import router from "./router";
-app.use(router);
+app.use("/api", router);
 
 // error handler
 // なぜか型予測してくれないので明記
