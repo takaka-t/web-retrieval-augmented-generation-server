@@ -1,0 +1,28 @@
+### 
+GET http://localhost:3000/api/chat-room/get-all
+Content-Type: application/json
+
+### 
+GET http://localhost:3000/api/chat-room/get-all-not-logical_deleted
+Content-Type: application/json
+
+### 
+POST http://localhost:3000/api/chat-room/create-new
+Content-Type: application/json
+
+### 
+POST http://localhost:3000/api/chat-room/update-chat-room-name
+Content-Type: application/json
+
+{
+    "targetChatRoomId": "2",
+    "newChatRoomName": "new chat room name"
+}
+
+### 
+POST http://localhost:3000/api/chat-room/logical-delete-target
+Content-Type: application/json
+
+{
+    "targetChatRoomId": "1"
+}

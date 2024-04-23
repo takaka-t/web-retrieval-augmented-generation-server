@@ -33,10 +33,14 @@ mariadb-dump --databases web_rag_db -u root -p > /docker-entrypoint-initdb.d/bac
 
 ts-node で --env-file がまだサポートされていないため dotenv で env 読み込む
 
+## todo
+
 テストのために jest を導入したい
 
-本番実行時は console.XXX 系をファイルにも出力するようにする
+本番実行時はコマンドで console.XXX 系をファイルにも出力するようにする
 
-共通処理などの import を絶対パスで行いたい
+共通処理などの import を絶対パスで行いたいので sconfig.json で baseUrl と paths を定義する
 
 データベース接続などで using を利用したい
+
+request の値検証を最適化したいが express-validator を使用するのがベストか
