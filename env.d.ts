@@ -2,7 +2,7 @@ declare module "process" {
   global {
     namespace NodeJS {
       interface ProcessEnv {
-        PORT: string;
+        LISTEN_PORT: string;
         DB_HOST: string;
         DB_PORT: string;
         DB_USER: string;

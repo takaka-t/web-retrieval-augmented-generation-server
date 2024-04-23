@@ -39,8 +39,8 @@ app.use((error: Error, request: express.Request, response: express.Response, nex
 
 try {
   // listen
-  app.listen(process.env.PORT, (): void => {
-    console.log(`Start on port ${process.env.PORT}.`);
+  app.listen(process.env.LISTEN_PORT, (): void => {
+    console.log(`Start on port ${process.env.LISTEN_PORT}.`);
   });
 } catch (e) {
   console.error(e);
