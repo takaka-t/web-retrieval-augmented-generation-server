@@ -7,6 +7,7 @@ const router = Router();
 router.get("/get-test", async (request, response, next): Promise<void> => {
   try {
     response.status(200).json({ result: "getTestOK" });
+    return;
   } catch (error) {
     next(error);
   }
@@ -20,6 +21,7 @@ router.post("/post-test", async (request, response, next): Promise<void> => {
     console.log(request.body);
     const requestBody = { id: Number(request.body.id), name: String(request.body.name) };
     response.status(200).json({ newId: requestBody.id + 1 });
+    return;
   } catch (error) {
     next(error);
   }
@@ -38,6 +40,7 @@ router.get("/database-test", async (request, response, next): Promise<void> => {
       const rows = await connection.query("SELECT * FROM chat_room");
       console.log(rows);
       response.status(200).json({ result: rows });
+      return;
     } finally {
       // release end どちらも正常にプールに戻されてそうだけど公式に合わせて end を使用する
       // https://mariadb.com/docs/server/connect/programming-languages/nodejs/promise/connection-pools/

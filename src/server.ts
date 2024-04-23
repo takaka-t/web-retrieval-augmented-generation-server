@@ -34,7 +34,7 @@ app.use("/api", router);
 app.use((error: Error, request: express.Request, response: express.Response, next: express.NextFunction) => {
   console.error(error.message);
   console.error(error.stack);
-  response.status(500).json({ error: error.message });
+  response.status(500).json({ message: error.message });
 });
 
 try {
