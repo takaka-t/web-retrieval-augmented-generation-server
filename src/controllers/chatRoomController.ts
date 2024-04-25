@@ -38,7 +38,7 @@ router.get("/get-all", async (request, response, next): Promise<void> => {
  * チャットルーム取得
  * ※論理削除されていないもののみ取得
  */
-router.get("/get-all-not-logical_deleted", async (request, response, next): Promise<void> => {
+router.get("/get-all-not-logical-deleted", async (request, response, next): Promise<void> => {
   try {
     /** DB接続 */
     const connection = await global.databaseConnectionPool.getConnection();
