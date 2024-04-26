@@ -3,7 +3,7 @@ GET http://localhost:3000/api/chat-room/get-all
 Content-Type: application/json
 
 ### 
-GET http://localhost:3000/api/chat-room/get-all-not-logical_deleted
+GET http://localhost:3000/api/chat-room/get-all-not-logical-deleted
 Content-Type: application/json
 
 ### 
