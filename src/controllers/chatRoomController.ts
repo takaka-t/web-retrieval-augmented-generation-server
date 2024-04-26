@@ -68,6 +68,57 @@ router.get("/get-all-not-logical-deleted", async (request, response, next): Prom
 });
 
 /**
+ * 対象のチャットルーム取得
+ */
+router.get("/get-target", async (request, response, next): Promise<void> => {
+  try {
+    // requestデータ検証
+    if (
+      request.query.targetChatRoomId === undefined ||
+      request.query.targetChatRoomId === null ||
+      String(request.query.targetChatRoomId) === "" ||
+      new RegExp("^[1-9]+[0-9]*$").test(String(request.query.targetChatRoomId)) === false
+    ) {
+      response.status(400).json({ message: "リクエストが不正です" });
+      return;
+    }
+
+    /** 対象チャットルームID */
+    const targetChatRoomId = Number(request.query.targetChatRoomId);
+
+    /** DB接続 */
+    const connection = await global.databaseConnectionPool.getConnection();
+    try {
+      // データ取得
+      const rows = await connection.query("SELECT chat_room_id, chat_room_name, create_datetime, is_logical_delete FROM chat_room WHERE chat_room_id = ?", [targetChatRoomId]);
+
+      // 取得結果が1件以外の場合は不正
+      if (rows.length !== 1) {
+        throw new Error("データを正しく取得できませんでした");
+      }
+
+      // 変換
+      const row = rows[0];
+      const chatRoom = {
+        chatRoomId: row.chat_room_id,
+        chatRoomName: row.chat_room_name,
+        createDatetime: row.create_datetime,
+        isLogicalDelete: row.is_logical_delete,
+      };
+
+      // response
+      response.status(200).json({ chatRoom: chatRoom });
+      return;
+    } finally {
+      // DB接続終了
+      await connection.end();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
  * チャットルーム作成
  */
 router.post("/create-new", async (request, response, next): Promise<void> => {

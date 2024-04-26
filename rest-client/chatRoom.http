@@ -1,10 +1,11 @@
 ### 
 GET http://localhost:3000/api/chat-room/get-all
-Content-Type: application/json
 
 ### 
 GET http://localhost:3000/api/chat-room/get-all-not-logical-deleted
-Content-Type: application/json
+
+### 
+GET http://localhost:3000/api/chat-room/get-target?targetChatRoomId=3
 
 ### 
 POST http://localhost:3000/api/chat-room/create-new
