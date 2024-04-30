@@ -9,4 +9,8 @@ router.use("/test", testController);
 import chatRoomController from "./controllers/chatRoomController";
 router.use("/chat-room", chatRoomController);
 
+// chatRoomMessageController
+import chatRoomMessageController from "./controllers/chatRoomMessageController";
+router.use("/chat-room-message", chatRoomMessageController);
+
 export default router;
