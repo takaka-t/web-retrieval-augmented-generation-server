@@ -44,7 +44,7 @@ router.get("/get-all-not-logical-deleted", async (request, response, next): Prom
     const connection = await global.databaseConnectionPool.getConnection();
     try {
       // データ取得
-      const rows = await connection.query("SELECT chat_room_id, chat_room_name, create_datetime FROM chat_room WHERE is_logical_delete = 0");
+      const rows = await connection.query("SELECT chat_room_id, chat_room_name, create_datetime FROM chat_room WHERE is_logical_delete = ?", [false]);
 
       // 変換
       const chatRooms = rows.map((row: any) => {
@@ -130,13 +130,17 @@ router.post("/create-new", async (request, response, next): Promise<void> => {
       // TODO:新規ID取得時にロックしないとPK違反が起きる恐れあり
 
       /** 新規チャットルームID */
-      const newId = Number((await connection.query("SELECT IFNULL(MAX(chat_room_id), 0) + 1 AS new_id FROM chat_room"))[0].new_id);
+      const newChatRoomId = Number((await connection.query("SELECT IFNULL(MAX(chat_room_id), 0) + 1 AS new_chat_room_id FROM chat_room"))[0].new_chat_room_id);
 
       // チャットルーム登録
-      await connection.query("INSERT INTO chat_room (chat_room_id, chat_room_name, create_datetime, is_logical_delete) VALUES (?, ?, NOW(), 0)", [newId, `チャットルーム ${newId}`]);
+      await connection.query("INSERT INTO chat_room (chat_room_id, chat_room_name, create_datetime, is_logical_delete) VALUES (?, ?, NOW(), ?)", [
+        newChatRoomId,
+        `チャットルーム ${newChatRoomId}`,
+        false,
+      ]);
 
       // response
-      response.status(200).json({ newId: newId });
+      response.status(200).json({ newChatRoomId: newChatRoomId });
       return;
     } finally {
       // DB接続終了
@@ -212,7 +216,7 @@ router.post("/logical-delete-target", async (request, response, next): Promise<v
     const connection = await global.databaseConnectionPool.getConnection();
     try {
       // チャットルーム論理削除
-      await connection.query("UPDATE chat_room SET is_logical_delete = 1 WHERE chat_room_id = ?", [targetChatRoomId]);
+      await connection.query("UPDATE chat_room SET is_logical_delete = ? WHERE chat_room_id = ?", [true, targetChatRoomId]);
 
       // response
       response.status(200).json();
