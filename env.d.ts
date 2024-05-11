@@ -8,6 +8,7 @@ declare module "process" {
         DB_USER: string;
         DB_PASSWORD: string;
         DB_NAME: string;
+        OPENAI_API_KEY: string;
       }
     }
   }

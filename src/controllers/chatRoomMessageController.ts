@@ -152,6 +152,7 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
 
       // TODO:ボット側メッセージ作成 OPENAI API呼び出し
       // チャットルームメッセージ履歴取得
+      await global.createThreadAndRun();
 
       // チャットボット回答取得
       const chatBotResponse = "TODO:チャットボット回答";

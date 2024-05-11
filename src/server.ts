@@ -2,6 +2,18 @@
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
+// database
+import { createDatabaseConnectionPool, closeDatabaseConnectionPool } from "./database";
+// データベース接続プールを初期化する
+createDatabaseConnectionPool();
+
+// openai
+import { initializeOpenAI } from "./openai";
+// OpenAI を初期化する
+initializeOpenAI();
+// TODO:専用APIを作成する
+global.uploadFilesAndCreateAssistant();
+
 // express
 import express from "express";
 const app = express();
@@ -19,11 +31,6 @@ app.use((request, response, next) => {
   console.log(`${request.method} ${request.originalUrl}`);
   next();
 });
-
-// database
-import { createDatabaseConnectionPool, closeDatabaseConnectionPool } from "./database";
-// データベース接続プールを初期化する
-createDatabaseConnectionPool();
 
 // router
 import router from "./router";
