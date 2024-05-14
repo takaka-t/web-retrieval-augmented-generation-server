@@ -1,3 +1,5 @@
+import path from "path";
+
 // dotenv
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
@@ -42,6 +44,20 @@ app.use((error: Error, request: express.Request, response: express.Response, nex
   console.error(error.message);
   console.error(error.stack);
   response.status(500).json({ message: error.message });
+});
+
+// static
+app.use(express.static(path.join(__dirname, "public")));
+
+// catch all route
+app.get("*", (req, res) => {
+  // APIのリクエストでパスがマッチしなかった場合は 404
+  if (req.path.startsWith("/api/")) {
+    res.status(404).send("Not found 404");
+  }
+
+  // それ以外はindex.htmlを返す
+  res.sendFile(path.resolve(path.join(__dirname, "public", "index.html")));
 });
 
 try {
