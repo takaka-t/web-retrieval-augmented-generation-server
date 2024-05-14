@@ -133,38 +133,45 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
     const connection = await global.databaseConnectionPool.getConnection();
 
     try {
+      /**
+       * チャットルームメッセージ履歴
+       * ※直近の3往復(6件)を取得
+       */
+      const chatRoomMessagesHistory: { isSenderBot: boolean; messageContent: string; sendDatetime: Date }[] = (
+        await connection.query(
+          "SELECT is_sender_bot, message_content, send_datetime FROM chat_room_message WHERE chat_room_id = ? AND is_logical_delete = ? ORDER BY chat_room_message_id DESC LIMIT 6",
+          [targetChatRoomId, false]
+        )
+      )
+        .reverse() // 昇順に変換
+        .map((row: any) => {
+          return {
+            isSenderBot: Boolean(row.is_sender_bot),
+            messageContent: String(row.message_content),
+            sendDatetime: new Date(row.send_datetime),
+          };
+        });
+
+      /** チャットボット回答取得 */
+      const replyMessage = await global.createThreadAndRun({
+        messages: chatRoomMessagesHistory.map((chatRoomMessage) => {
+          return { role: chatRoomMessage.isSenderBot ? "assistant" : "user", content: chatRoomMessage.messageContent };
+        }),
+      });
+
       // TODO:新規ID取得時にロックしないとPK違反が起きる恐れあり
 
-      /** 新規チャットルームメッセージID */
-      const newChatRoomMessageId = Number(
-        (await connection.query("SELECT IFNULL(MAX(chat_room_message_id), 0) + 1 AS new_chat_room_message_id FROM chat_room_message WHERE chat_room_id = ?", [targetChatRoomId]))[0]
-          .new_chat_room_message_id
+      /** MaxチャットルームメッセージID */
+      let maxChatRoomMessageId = Number(
+        (await connection.query("SELECT IFNULL(MAX(chat_room_message_id), 0) AS max_chat_room_message_id FROM chat_room_message WHERE chat_room_id = ?", [targetChatRoomId]))[0]
+          .max_chat_room_message_id
       );
 
       // 新規チャットルームメッセージ登録
-      await connection.query("INSERT INTO chat_room_message (chat_room_id, chat_room_message_id, is_sender_bot, message_content, send_datetime, is_logical_delete) VALUES (?, ?, ?, ?, NOW(), ?)", [
-        targetChatRoomId,
-        newChatRoomMessageId,
-        false,
-        newChatRoomMessage,
-        false,
-      ]);
-
-      // TODO:ボット側メッセージ作成 OPENAI API呼び出し
-      // チャットルームメッセージ履歴取得
-      await global.createThreadAndRun();
-
-      // チャットボット回答取得
-      const chatBotResponse = "TODO:チャットボット回答";
-
-      // チャットボット回答チャットルームメッセージ登録
-      await connection.query("INSERT INTO chat_room_message (chat_room_id, chat_room_message_id, is_sender_bot, message_content, send_datetime, is_logical_delete) VALUES (?, ?, ?, ?, NOW(), ?)", [
-        targetChatRoomId,
-        newChatRoomMessageId + 1,
-        true,
-        chatBotResponse,
-        false,
-      ]);
+      await connection.query(
+        "INSERT INTO chat_room_message (chat_room_id, chat_room_message_id, is_sender_bot, message_content, send_datetime, is_logical_delete) VALUES (?, ?, ?, ?, NOW(), ?), (?, ?, ?, ?, NOW(), ?)",
+        [targetChatRoomId, (maxChatRoomMessageId += 1), false, newChatRoomMessage, false, targetChatRoomId, (maxChatRoomMessageId += 1), true, replyMessage, false]
+      );
 
       // response
       response.status(200).json();

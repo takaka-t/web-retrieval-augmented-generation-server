@@ -27,21 +27,26 @@ declare global {
    */
   var uploadFilesAndCreateAssistant: () => Promise<void>;
   /**
-   * Thread を作成して実行する
+   * OpenAI Assistant ID を設定する
    */
-  var createThreadAndRun: () => Promise<void>;
+  var setOpenaiAssistantId: (argument: { openaiAssistantId: string }) => Promise<void>;
+  /**
+   * Thread を作成して実行する
+   * @returns 回答メッセージ
+   */
+  var createThreadAndRun: (argument: { messages: OpenAI.Beta.Threads.ThreadCreateParams.Message[] }) => Promise<string>;
 }
 
 /**
  * OpneAI を初期化する
  */
 export const initializeOpenAI = async (): Promise<void> => {
-  // initialize OpenAI
+  // Initialize OpenAI
   global.openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  // initialize Function
+  // Initialize Function
   global.uploadFilesAndCreateAssistant = async (): Promise<void> => {
     console.log("vectorStoreId", global.openaiVectorStoreId);
 
@@ -77,8 +82,13 @@ export const initializeOpenAI = async (): Promise<void> => {
     global.openaiAssistantId = assistant.id;
   };
 
-  // initialize Function
-  global.createThreadAndRun = async (): Promise<void> => {
+  // Initialize Function
+  global.setOpenaiAssistantId = async (argument: { openaiAssistantId: string }): Promise<void> => {
+    global.openaiAssistantId = argument.openaiAssistantId;
+  };
+
+  // Initialize Function
+  global.createThreadAndRun = async (argument: { messages: OpenAI.Beta.Threads.ThreadCreateParams.Message[] }): Promise<string> => {
     // Check Assistant ID
     if (global.openaiAssistantId === undefined) {
       throw new Error("Assistant not created");
@@ -86,12 +96,7 @@ export const initializeOpenAI = async (): Promise<void> => {
 
     /** Thread Instance */
     const thread = await global.openai.beta.threads.create({
-      messages: [
-        {
-          role: "user",
-          content: "どんな人間が分かりやすくまとめて、できるだけ詳しく教えてください。",
-        },
-      ],
+      messages: argument.messages,
     });
 
     // Run Thread and polling
@@ -99,14 +104,16 @@ export const initializeOpenAI = async (): Promise<void> => {
       assistant_id: global.openaiAssistantId,
     });
 
-    // Get response message
+    // Return reply message
     const messages = await global.openai.beta.threads.messages.list(thread.id);
     const reply = messages.data[0]?.content[0];
     if (reply.type === "text") {
       console.log("message: ", reply.text.value);
       console.log("annotations: ", reply.text.annotations);
+      return reply.text.value;
     } else {
       console.log("テキスト以外が返却されている");
+      throw new Error("テキスト以外が返却されている");
     }
   };
 };
