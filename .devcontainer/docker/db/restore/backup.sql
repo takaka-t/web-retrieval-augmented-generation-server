@@ -31,21 +31,13 @@ DROP TABLE IF EXISTS `chat_room`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chat_room` (
-  `chat_room_id` int(11) NOT NULL,
-  `create_datetime` datetime NOT NULL,
-  `is_logical_delete` bit(1) NOT NULL,
+  `chat_room_id` int(11) NOT NULL COMMENT 'チャットルームID',
+  `chat_room_name` varchar(100) NOT NULL COMMENT 'チャットルーム名',
+  `create_datetime` datetime NOT NULL COMMENT '作成日時',
+  `is_logical_delete` bit(1) NOT NULL COMMENT '論理削除されているか',
   PRIMARY KEY (`chat_room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chat_room`
---
-
-LOCK TABLES `chat_room` WRITE;
-/*!40000 ALTER TABLE `chat_room` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chat_room` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `chat_room_message`
@@ -55,23 +47,15 @@ DROP TABLE IF EXISTS `chat_room_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chat_room_message` (
-  `chat_room_id` int(11) NOT NULL,
-  `chat_room_message_id` int(11) NOT NULL,
+  `chat_room_id` int(11) NOT NULL COMMENT 'チャットルームID',
+  `chat_room_message_id` int(11) NOT NULL COMMENT 'チャットルームメッセージID',
   `is_sender_bot` bit(1) NOT NULL COMMENT 'チャットボットかが送信したものか',
   `message_content` text NOT NULL COMMENT 'メッセージ内容',
   `send_datetime` datetime NOT NULL COMMENT '送信日時',
+  `is_logical_delete` bit(1) NOT NULL COMMENT '論理削除されているか',
   PRIMARY KEY (`chat_room_id`,`chat_room_message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chat_room_message`
---
-
-LOCK TABLES `chat_room_message` WRITE;
-/*!40000 ALTER TABLE `chat_room_message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chat_room_message` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -82,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-18 21:07:11
+-- Dump completed on 2024-05-15 20:33:23
