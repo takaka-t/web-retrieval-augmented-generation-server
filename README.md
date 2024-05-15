@@ -24,7 +24,7 @@ rest-client フォルダに http ファイルを作成して行う
 ## データベース backup
 
 db コンテナ内で以下コマンド実行
-mariadb-dump --databases web_rag_db -u root -p > /docker-entrypoint-initdb.d/backup.sql
+mariadb-dump --no-data --databases web_rag_db -u root -p > /docker-entrypoint-initdb.d/backup.sql
 コンテナ作成時に実行されるもので git 管理する
 
 ## memo
