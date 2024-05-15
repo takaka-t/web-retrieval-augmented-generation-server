@@ -137,7 +137,7 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
        * チャットルームメッセージ履歴
        * ※直近の3往復(6件)を取得
        */
-      const chatRoomMessagesHistory: { isSenderBot: boolean; messageContent: string; sendDatetime: Date }[] = (
+      const chatRoomMessagesHistory: { isSenderBot: boolean; messageContent: string }[] = (
         await connection.query(
           "SELECT is_sender_bot, message_content, send_datetime FROM chat_room_message WHERE chat_room_id = ? AND is_logical_delete = ? ORDER BY chat_room_message_id DESC LIMIT 6",
           [targetChatRoomId, false]
@@ -148,9 +148,11 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
           return {
             isSenderBot: Boolean(row.is_sender_bot),
             messageContent: String(row.message_content),
-            sendDatetime: new Date(row.send_datetime),
           };
         });
+
+      // 今回の新規チャットルームメッセージを追加
+      chatRoomMessagesHistory.push({ isSenderBot: false, messageContent: newChatRoomMessage });
 
       /** チャットボット回答取得 */
       const replyMessage = await global.createThreadAndRun({
