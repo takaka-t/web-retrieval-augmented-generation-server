@@ -40,7 +40,7 @@ declare global {
 /**
  * OpneAI を初期化する
  */
-export const initializeOpenAI = async (): Promise<void> => {
+export const initializeOpenAI = (): void => {
   // Initialize OpenAI
   global.openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
