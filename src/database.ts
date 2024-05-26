@@ -8,7 +8,7 @@ declare global {
   /**
    * データベース接続プール
    * getConnection() で接続を取得する
-   * 必ず try-finally で接続を解放すること
+   * 接続は必ず try-finally で接続を解放すること
    */
   var databaseConnectionPool: mariadb.Pool;
 }
