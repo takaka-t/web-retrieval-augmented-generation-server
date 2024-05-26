@@ -1,7 +1,7 @@
 {
   "include": [
     "src/**/*.ts",
-    "env.d.ts"
+    "types.d.ts"
   ],
   "compilerOptions": {
     // どのバージョンのjsにトランスパイルするか https://node.green/
