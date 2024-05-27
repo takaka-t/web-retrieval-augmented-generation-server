@@ -2,10 +2,7 @@
 GET http://localhost:3000/api/chat-room/get-all
 
 ### 
-GET http://localhost:3000/api/chat-room/get-all-not-logical-deleted
-
-### 
-GET http://localhost:3000/api/chat-room/get-target?targetChatRoomId=3
+GET http://localhost:3000/api/chat-room/get-target?targetChatRoomId=1
 
 ### 
 POST http://localhost:3000/api/chat-room/create-new
@@ -16,7 +13,7 @@ POST http://localhost:3000/api/chat-room/update-chat-room-name
 Content-Type: application/json
 
 {
-    "targetChatRoomId": "2",
+    "targetChatRoomId": "1",
     "newChatRoomName": "new chat room name"
 }
 

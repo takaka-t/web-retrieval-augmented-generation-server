@@ -33,6 +33,7 @@ DROP TABLE IF EXISTS `chat_room`;
 CREATE TABLE `chat_room` (
   `chat_room_id` int(11) NOT NULL COMMENT 'チャットルームID',
   `chat_room_name` varchar(100) NOT NULL COMMENT 'チャットルーム名',
+  `create_session_user_id` varchar(128) NOT NULL COMMENT '作成セッションユーザーID',
   `create_datetime` datetime NOT NULL COMMENT '作成日時',
   `is_logical_delete` bit(1) NOT NULL COMMENT '論理削除されているか',
   PRIMARY KEY (`chat_room_id`)
@@ -83,4 +84,4 @@ CREATE TABLE `session_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-26 19:34:25
+-- Dump completed on 2024-05-27 16:46:57

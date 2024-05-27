@@ -2,10 +2,6 @@
 GET http://localhost:3000/api/chat-room-message/get-all?targetChatRoomId=1
 
 ### 
-GET http://localhost:3000/api/chat-room-message/get-all-not-logical-deleted?targetChatRoomId=1
-
-
-### 
 POST http://localhost:3000/api/chat-room-message/send-new
 Content-Type: application/json
 
