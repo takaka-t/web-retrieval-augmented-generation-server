@@ -12,3 +12,6 @@ RUN apt-get install -y git
 
 # ping
 RUN apt install -y iputils-ping net-tools
+
+# vim
+RUN apt install -y vim

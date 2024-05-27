@@ -48,3 +48,5 @@ ts-node で --env-file がまだサポートされていないため dotenv で 
 request の値検証を最適化したいが express-validator を使用するのがベストか
 
 OpneAI へのファイルアップロードは stream を使いたい
+
+rest client で url に定数使いたい
