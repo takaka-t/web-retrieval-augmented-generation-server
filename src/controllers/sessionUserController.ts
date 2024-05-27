@@ -9,6 +9,13 @@ router.get("/get-session-user-info", async (request, response, next): Promise<vo
     // セッションユーザー名取得
     const sessionUserName = request.session.sessionUserName;
 
+    // セッションユーザー情報が未設定の場合
+    if (sessionUserName === undefined || sessionUserName === null) {
+      // response
+      response.status(200).json(null);
+      return;
+    }
+
     // response
     response.status(200).json({ sessionUserName: sessionUserName });
     return;
