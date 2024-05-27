@@ -11,7 +11,7 @@ router.get("/get-all", async (request, response, next): Promise<void> => {
     try {
       // データ取得
       const rows = await connection.query(
-        "SELECT chat_room.chat_room_id, chat_room.chat_room_name, chat_room.create_datetime FROM chat_room WHERE chat_room.create_session_user_id = ? AND chat_room.is_logical_delete = ?",
+        "SELECT chat_room.chat_room_id, chat_room.chat_room_name, chat_room.create_datetime, (SELECT MAX(chat_room_message.send_datetime) FROM chat_room_message WHERE chat_room_message.chat_room_id = chat_room.chat_room_id) AS last_chat_room_message_datetime FROM chat_room WHERE chat_room.create_session_user_id = ? AND chat_room.is_logical_delete = ?",
         [request.session.id, false]
       );
 
@@ -21,6 +21,7 @@ router.get("/get-all", async (request, response, next): Promise<void> => {
           chatRoomId: row.chat_room_id,
           chatRoomName: row.chat_room_name,
           createDatetime: row.create_datetime,
+          lastChatRoomMessageDatetime: row.last_chat_room_message_datetime, // nullable
         };
       });
 
