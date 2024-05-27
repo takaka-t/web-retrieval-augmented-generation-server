@@ -20,6 +20,8 @@ F5 で起動
 
 呼び出しは rest-client 拡張機能を利用
 rest-client フォルダに http ファイルを作成して行う
+cookie の削除は以下コマンドで /root/.rest-client/cookie.json を削除して VSCode の Reload Window
+rm /root/.rest-client/cookie.json
 
 ## データベース backup
 

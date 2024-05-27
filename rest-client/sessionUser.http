@@ -1,0 +1,10 @@
+### 
+GET http://localhost:3000/api/session-user/get-session-user-info
+
+### 
+POST http://localhost:3000/api/session-user/set-session-user-info
+Content-Type: application/json
+
+{
+    "newSessionUserName": "new session user name"
+}

@@ -1,3 +1,4 @@
+// env
 declare module "process" {
   global {
     namespace NodeJS {
@@ -9,7 +10,17 @@ declare module "process" {
         DB_PASSWORD: string;
         DB_NAME: string;
         OPENAI_API_KEY: string;
+        SESSION_SECRET: string;
       }
     }
+  }
+}
+
+// session
+import "express-session";
+declare module "express-session" {
+  interface SessionData {
+    sessionUserName?: string;
+    sessionUserLastAccessDatetime?: Date;
   }
 }

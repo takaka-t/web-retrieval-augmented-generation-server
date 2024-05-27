@@ -1,4 +1,4 @@
--- MariaDB dump 10.19-11.3.2-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19-11.3.2-MariaDB, for debian-linux-gnu (aarch64)
 --
 -- Host: localhost    Database: web_rag_db
 -- ------------------------------------------------------
@@ -56,6 +56,23 @@ CREATE TABLE `chat_room_message` (
   PRIMARY KEY (`chat_room_id`,`chat_room_message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `session_user`
+--
+
+DROP TABLE IF EXISTS `session_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `session_user` (
+  `session_user_id` varchar(128) NOT NULL COMMENT 'セッションユーザーID',
+  `session_user_data` text NOT NULL COMMENT 'セッションデータをjson文字列で保持する',
+  `session_user_last_access_datetime` datetime NOT NULL COMMENT 'セッションユーザー最終アクセス日時',
+  `session_user_name` varchar(100) DEFAULT NULL COMMENT 'セッションユーザー名',
+  `is_logical_delete` bit(1) NOT NULL COMMENT '論理削除されているか',
+  PRIMARY KEY (`session_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -66,4 +83,4 @@ CREATE TABLE `chat_room_message` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-15 20:33:23
+-- Dump completed on 2024-05-26 19:34:25

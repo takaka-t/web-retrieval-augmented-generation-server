@@ -28,6 +28,10 @@ app.use(express.urlencoded({ extended: true }));
 import helmet from "helmet";
 app.use(helmet());
 
+// session
+import { session } from "./session";
+app.use(session);
+
 // logger
 app.use((request, response, next) => {
   console.log(`${request.method} ${request.originalUrl}`);
