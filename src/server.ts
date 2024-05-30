@@ -38,6 +38,27 @@ app.use((request, response, next) => {
   next();
 });
 
+// front app version
+app.use(async (request, response, next): Promise<void> => {
+  try {
+    /** DB接続 */
+    const connection = await global.databaseConnectionPool.getConnection();
+    try {
+      // DBから現在のフロントアプリバージョンを取得
+      const frontAppVersion = (await connection.query("SELECT front_app_version FROM application_config"))[0].front_app_version;
+      // response header に設定
+      response.setHeader("Front-APP-Version", String(frontAppVersion));
+
+      next();
+    } finally {
+      // DB接続終了
+      await connection.end();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 // router
 import router from "./router";
 app.use("/api", router);

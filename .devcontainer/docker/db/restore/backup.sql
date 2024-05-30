@@ -24,6 +24,18 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `web_rag_db` /*!40100 DEFAULT CHARACTER
 USE `web_rag_db`;
 
 --
+-- Table structure for table `application_config`
+--
+
+DROP TABLE IF EXISTS `application_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `application_config` (
+  `front_app_version` varchar(100) NOT NULL COMMENT 'フロントアプリバージョン(x.x.x)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='アプリケーション設定';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `chat_room`
 --
 
@@ -84,4 +96,4 @@ CREATE TABLE `session_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-27 16:46:57
+-- Dump completed on 2024-05-30 20:44:40
