@@ -86,6 +86,21 @@ CREATE TABLE `session_user` (
   PRIMARY KEY (`session_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `unanswered_content`
+--
+
+DROP TABLE IF EXISTS `unanswered_content`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `unanswered_content` (
+  `unanswered_content_id` int(11) NOT NULL COMMENT '回答できなかった内容ID',
+  `unanswered_content_text` text NOT NULL COMMENT '回答できなかった内容テキスト',
+  `unanswered_content_chat_room_id` int(11) NOT NULL COMMENT '回答できなかった内容のチャットルームID',
+  PRIMARY KEY (`unanswered_content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='回答できなかった内容';
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -96,4 +111,4 @@ CREATE TABLE `session_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-30 20:44:40
+-- Dump completed on 2024-05-30 21:37:51

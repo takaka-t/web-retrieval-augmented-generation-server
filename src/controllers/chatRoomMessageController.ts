@@ -91,7 +91,6 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
 
     /** DB接続 */
     const connection = await global.databaseConnectionPool.getConnection();
-
     try {
       // 対象のチャットルームが正常か確認
       const result = await connection.query("SELECT COUNT(*) AS count FROM chat_room WHERE chat_room.chat_room_id = ? AND chat_room.create_session_user_id = ? AND chat_room.is_logical_delete = ?", [
@@ -127,11 +126,36 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
       chatRoomMessagesHistory.push({ isSenderBot: false, messageContent: newChatRoomMessage });
 
       /** チャットボット回答取得 */
-      const replyMessage = await global.createThreadAndRun({
+      let replyMessage = await global.createThreadAndRun({
         messages: chatRoomMessagesHistory.map((chatRoomMessage) => {
           return { role: chatRoomMessage.isSenderBot ? "assistant" : "user", content: chatRoomMessage.messageContent };
         }),
       });
+
+      // チャットボットが回答できなかった場合
+      if (replyMessage !== "@@FALSE@@") {
+        // 回答できなかった内容を作成
+        const unanseredContentText = chatRoomMessagesHistory
+          .map((chatRoomMessage) => {
+            return `- ${chatRoomMessage.isSenderBot ? "ChatBot" : "You"} - \n${chatRoomMessage.messageContent}`;
+          })
+          .join("\n");
+
+        // 回答できなかった内容IDの最大値を取得
+        const maxUnansweredContentId = Number(
+          (await connection.query("SELECT IFNULL(MAX(unanswered_content.unanswered_content_id), 0) AS max_unanswered_content_id FROM unanswered_content"))[0].max_unanswered_content_id
+        );
+
+        // 回答できなかった内容を登録
+        await connection.query("INSERT INTO unanswered_content (unanswered_content_id, unanswered_content_text, unanswered_content_chat_room_id) VALUES (?, ?, ?)", [
+          maxUnansweredContentId + 1,
+          unanseredContentText,
+          targetChatRoomId,
+        ]);
+
+        // 回答できなかった場合の返信メッセージを作成
+        replyMessage = "申し訳ありませんが回答できませんでした。\n情報が不足しているか関係のない質問です。";
+      }
 
       // TODO:新規ID取得時にロックしないとPK違反が起きる恐れあり
 
