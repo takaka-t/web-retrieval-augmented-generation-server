@@ -75,14 +75,14 @@ app.use((error: Error, request: express.Request, response: express.Response, nex
 app.use(express.static(path.join(__dirname, "public")));
 
 // catch all route
-app.get("*", (req, res) => {
+app.get("*", (request, response) => {
   // APIのリクエストでパスがマッチしなかった場合は 404
-  if (req.path.startsWith("/api/")) {
-    res.status(404).send("Not found 404");
+  if (request.path.startsWith("/api/")) {
+    response.status(404).send("Not found 404");
   }
 
   // それ以外はindex.htmlを返す
-  res.sendFile(path.resolve(path.join(__dirname, "public", "index.html")));
+  response.sendFile(path.resolve(path.join(__dirname, "public", "index.html")));
 });
 
 try {
