@@ -31,8 +31,10 @@ DROP TABLE IF EXISTS `application_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application_config` (
-  `front_app_version` varchar(100) NOT NULL COMMENT 'フロントアプリバージョン(x.x.x)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='アプリケーション設定';
+  `application_config_key` varchar(100) NOT NULL,
+  `application_config_value` varchar(100) NOT NULL,
+  PRIMARY KEY (`application_config_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='アプリケーション設定\n- FrontAppVersion -> x.x.x';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,4 +113,4 @@ CREATE TABLE `unanswered_content` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-30 21:37:51
+-- Dump completed on 2024-06-01 15:54:39

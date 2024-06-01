@@ -45,7 +45,7 @@ app.use(async (request, response, next): Promise<void> => {
     const connection = await global.databaseConnectionPool.getConnection();
     try {
       // DBから現在のフロントアプリバージョンを取得
-      const frontAppVersion = (await connection.query("SELECT front_app_version FROM application_config"))[0].front_app_version;
+      const frontAppVersion = (await connection.query("SELECT application_config_value FROM application_config WHERE application_config_key = 'FrontAppVersion'"))[0].application_config_value;
       // response header に設定
       response.setHeader("Front-APP-Version", String(frontAppVersion));
 
