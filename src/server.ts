@@ -36,6 +36,7 @@ app.use(session);
 app.use((request, response, next) => {
   console.log(`${request.method} ${request.originalUrl}`);
   next();
+  return;
 });
 
 // front app version
@@ -50,6 +51,7 @@ app.use(async (request, response, next): Promise<void> => {
       response.setHeader("Front-APP-Version", String(frontAppVersion));
 
       next();
+      return;
     } finally {
       // DB接続終了
       await connection.end();
