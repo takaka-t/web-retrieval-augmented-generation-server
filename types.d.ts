@@ -1,17 +1,15 @@
 // env
-declare module "process" {
-  global {
-    namespace NodeJS {
-      interface ProcessEnv {
-        LISTEN_PORT: string;
-        DB_HOST: string;
-        DB_PORT: string;
-        DB_USER: string;
-        DB_PASSWORD: string;
-        DB_NAME: string;
-        OPENAI_API_KEY: string;
-        SESSION_SECRET: string;
-      }
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      readonly LISTEN_PORT: string;
+      readonly DB_HOST: string;
+      readonly DB_PORT: string;
+      readonly DB_USER: string;
+      readonly DB_PASSWORD: string;
+      readonly DB_NAME: string;
+      readonly OPENAI_API_KEY: string;
+      readonly SESSION_SECRET: string;
     }
   }
 }
