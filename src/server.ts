@@ -1,4 +1,5 @@
 import path from "path";
+import { Consts } from "./consts";
 
 // dotenv
 import dotenv from "dotenv";
@@ -15,6 +16,35 @@ import { initializeOpenAI } from "./openai";
 initializeOpenAI();
 // TODO:専用APIを作成する
 global.uploadFilesAndCreateAssistant();
+
+// admin user password
+import { createPasswordHashWithSalt } from "./password";
+/** パスワード */
+const password = "admin1234";
+// パスワードのハッシュ化を行う
+const resultPassword = createPasswordHashWithSalt({ inputedPassword: password });
+/** DB接続 */
+const connection = global.databaseConnectionPool
+  .getConnection()
+  .then((connection): void => {
+    // DBに管理者パスワードのソルト値とハッシュ値を保存
+    connection
+      .query(`REPLACE INTO application_config (application_config_key, application_config_value) VALUES (?, ?), (?, ?)`, [
+        Consts.ApplicationConfigKey.AdminPasswordSalt,
+        resultPassword.passwordSalt,
+        Consts.ApplicationConfigKey.AdminPasswordHash,
+        resultPassword.passwordHash,
+      ])
+      .catch((error): void => {
+        console.error("error : admin user password", error);
+      })
+      .finally((): void => {
+        connection.end();
+      });
+  })
+  .catch((error): void => {
+    console.error("error : admin user password", error);
+  });
 
 // express
 import express from "express";
@@ -46,7 +76,8 @@ app.use(async (request, response, next): Promise<void> => {
     const connection = await global.databaseConnectionPool.getConnection();
     try {
       // DBから現在のフロントアプリバージョンを取得
-      const frontAppVersion = (await connection.query("SELECT application_config_value FROM application_config WHERE application_config_key = 'FrontAppVersion'"))[0].application_config_value;
+      const frontAppVersion = (await connection.query(`SELECT application_config_value FROM application_config WHERE application_config_key = '${Consts.ApplicationConfigKey.FrontAppVersion}'`))[0]
+        .application_config_value;
       // response header に設定
       response.setHeader("Front-APP-Version", String(frontAppVersion));
 

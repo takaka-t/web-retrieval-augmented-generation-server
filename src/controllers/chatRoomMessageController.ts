@@ -147,10 +147,11 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
         );
 
         // 回答できなかった内容を登録
-        await connection.query("INSERT INTO unanswered_content (unanswered_content_id, unanswered_content_text, unanswered_content_chat_room_id) VALUES (?, ?, ?)", [
+        await connection.query("INSERT INTO unanswered_content (unanswered_content_id, unanswered_content_text, target_chat_room_id, create_datetime) VALUES (?, ?, ?, ?)", [
           maxUnansweredContentId + 1,
           unanseredContentText,
           targetChatRoomId,
+          new Date(),
         ]);
 
         // 回答できなかった場合の返信メッセージを作成

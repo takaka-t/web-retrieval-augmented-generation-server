@@ -10,6 +10,7 @@ declare global {
       readonly DB_NAME: string;
       readonly OPENAI_API_KEY: string;
       readonly SESSION_SECRET: string;
+      readonly PASSWORD_PEPPER: string;
     }
   }
 }
@@ -20,5 +21,6 @@ declare module "express-session" {
   interface SessionData {
     sessionUserName?: string;
     sessionUserLastAccessDatetime?: Date;
+    isAdminAuthenticated?: boolean;
   }
 }

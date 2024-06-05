@@ -50,3 +50,5 @@ request の値検証を最適化したいが express-validator を使用する�
 OpneAI へのファイルアップロードは stream を使いたい
 
 rest client で url に定数使いたい
+
+session の各項目更新

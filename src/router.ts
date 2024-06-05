@@ -17,4 +17,8 @@ router.use("/chat-room-message", chatRoomMessageController);
 import sessionUserController from "./controllers/sessionUserController";
 router.use("/session-user", sessionUserController);
 
+// adminController
+import adminController from "./controllers/adminController";
+router.use("/admin", adminController);
+
 export default router;

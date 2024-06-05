@@ -1,0 +1,12 @@
+
+
+###
+POST http://localhost:3000/api/admin/authenticate
+Content-Type: application/json
+
+{
+    "inputedPassword" : "admin1234"
+}
+
+### 
+GET http://localhost:3000/api/admin/get-unanswered-contents
