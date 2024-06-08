@@ -32,9 +32,9 @@ DROP TABLE IF EXISTS `application_config`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application_config` (
   `application_config_key` varchar(100) NOT NULL,
-  `application_config_value` varchar(100) NOT NULL,
+  `application_config_value` varchar(500) NOT NULL,
   PRIMARY KEY (`application_config_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='アプリケーション設定\n- FrontAppVersion -> x.x.x';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='アプリケーション設定\n- FrontAppVersion -> x.x.x\n- AdminPasswordHash\n- AdminPasswordSalt';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,8 +82,6 @@ DROP TABLE IF EXISTS `session_user`;
 CREATE TABLE `session_user` (
   `session_user_id` varchar(128) NOT NULL COMMENT 'セッションユーザーID',
   `session_user_data` text NOT NULL COMMENT 'セッションデータをjson文字列で保持する',
-  `session_user_last_access_datetime` datetime NOT NULL COMMENT 'セッションユーザー最終アクセス日時',
-  `session_user_name` varchar(100) DEFAULT NULL COMMENT 'セッションユーザー名',
   `is_logical_delete` bit(1) NOT NULL COMMENT '論理削除されているか',
   PRIMARY KEY (`session_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -99,7 +97,8 @@ DROP TABLE IF EXISTS `unanswered_content`;
 CREATE TABLE `unanswered_content` (
   `unanswered_content_id` int(11) NOT NULL COMMENT '回答できなかった内容ID',
   `unanswered_content_text` text NOT NULL COMMENT '回答できなかった内容テキスト',
-  `unanswered_content_chat_room_id` int(11) NOT NULL COMMENT '回答できなかった内容のチャットルームID',
+  `target_chat_room_id` int(11) NOT NULL COMMENT '回答できなかった内容の対象チャットルームID',
+  `create_datetime` datetime NOT NULL COMMENT '作成日時',
   PRIMARY KEY (`unanswered_content_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='回答できなかった内容';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -113,4 +112,4 @@ CREATE TABLE `unanswered_content` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-01 15:54:39
+-- Dump completed on 2024-06-08 15:27:02

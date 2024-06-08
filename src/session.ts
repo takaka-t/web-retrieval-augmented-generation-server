@@ -6,6 +6,7 @@ class CustomStore extends Store {
   }
 
   async get(sid: string, callback: (err: any, session?: SessionData | null) => void): Promise<void> {
+    console.log("get");
     try {
       /** DB接続 */
       const connection = await global.databaseConnectionPool.getConnection();
@@ -32,21 +33,22 @@ class CustomStore extends Store {
   }
 
   async set(sid: string, session: SessionData, callback?: (err?: any) => void): Promise<void> {
+    console.log("set");
     try {
       /** DB接続 */
       const connection = await global.databaseConnectionPool.getConnection();
       try {
-        // セッションデータをJson形式の文字列に変換
-        const sessionData = JSON.stringify(session);
+        // セッション初期化に必要な情報がない場合はエラー
+        if (session.sessionUserName === undefined || String(session.sessionUserName).trim() === "") {
+          throw new Error("sessionUserName is required");
+        }
 
-        // セッションユーザー登録
-        await connection.query("REPLACE INTO session_user (session_user_id, session_user_data, session_user_last_access_datetime, session_user_name, is_logical_delete) VALUES (?, ?, ?, ?, ?)", [
-          sid,
-          sessionData,
-          new Date(),
-          null,
-          false,
-        ]);
+        // セッションに必要な情報を設定
+        session.sessionUserLastAccessDatetime = new Date();
+        session.isAdminAuthenticated = false;
+
+        // セッションデータを保存
+        await this.saveSessionData(sid, session);
 
         if (callback !== undefined) callback(null);
       } finally {
@@ -59,6 +61,7 @@ class CustomStore extends Store {
   }
 
   async destroy(sid: string, callback?: (err?: any) => void): Promise<void> {
+    console.log("destroy");
     /** DB接続 */
     const connection = await global.databaseConnectionPool.getConnection();
     try {
@@ -72,12 +75,16 @@ class CustomStore extends Store {
   }
 
   async touch(sid: string, session: SessionData, callback?: () => void): Promise<void> {
+    console.log("touch");
     try {
       /** DB接続 */
       const connection = await global.databaseConnectionPool.getConnection();
       try {
         // セッションユーザーの最終アクセス日時を更新
-        await connection.query("UPDATE session_user SET session_user_last_access_datetime = ? WHERE session_user_id = ?", [new Date(), sid]);
+        session.sessionUserLastAccessDatetime = new Date();
+
+        // セッションデータを保存
+        await this.saveSessionData(sid, session);
 
         if (callback !== undefined) callback();
       } finally {
@@ -86,6 +93,27 @@ class CustomStore extends Store {
       }
     } catch (err) {
       if (callback !== undefined) callback();
+    }
+  }
+
+  /**
+   * セッションデータを保存
+   * @param sid
+   * @param session
+   */
+  private async saveSessionData(sid: string, session: SessionData): Promise<void> {
+    /** DB接続 */
+    const connection = await global.databaseConnectionPool.getConnection();
+    try {
+      // セッションデータをJson形式の文字列に変換
+      const sessionData = JSON.stringify(session);
+      // セッションユーザー登録
+      await connection.query("REPLACE INTO session_user (session_user_id, session_user_data, is_logical_delete) VALUES (?, ?, ?)", [sid, sessionData, false]);
+      // is_logical_delete は初期値のために false固定 とする
+      // もし true となっている場合は get で取得できないのでここで false に更新させることはない
+    } finally {
+      // DB接続終了
+      await connection.end();
     }
   }
 }

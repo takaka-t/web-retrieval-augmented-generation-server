@@ -1,6 +1,5 @@
 ### get-test
 GET http://localhost:3000/api/test/get-test
-Content-Type: application/json
 
 ### post-test
 POST http://localhost:3000/api/test/post-test
@@ -13,4 +12,3 @@ Content-Type: application/json
 
 ### database-test
 GET http://localhost:3000/api/test/database-test
-Content-Type: application/json
