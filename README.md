@@ -41,7 +41,8 @@ ts-node で --env-file がまだサポートされていないため dotenv で 
 
 本番実行時はコマンドで console.XXX 系をファイルにも出力するようにする
 
-共通処理などの import を絶対パスで行いたいので sconfig.json で baseUrl と paths を定義する
+共通処理などの import を絶対パスで行いたいので tsconfig.json で baseUrl と paths を定義する
+それができたら global の仕様をやめる
 
 データベース接続などで using を利用したい
 
@@ -50,5 +51,3 @@ request の値検証を最適化したいが express-validator を使用する�
 OpneAI へのファイルアップロードは stream を使いたい
 
 rest client で url に定数使いたい
-
-session の各項目更新
