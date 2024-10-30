@@ -16,6 +16,7 @@ import { initializeOpenAI } from "./openai";
 initializeOpenAI();
 // TODO:専用APIを作成する
 global.uploadFilesAndCreateAssistant();
+// global.setOpenaiAssistantId({ openaiAssistantId: "" });
 
 // admin user password
 import { createPasswordHashWithSalt } from "./password";

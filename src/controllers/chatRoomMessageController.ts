@@ -133,7 +133,7 @@ router.post("/send-new", async (request, response, next): Promise<void> => {
       });
 
       // チャットボットが回答できなかった場合
-      if (replyMessage !== "@@FALSE@@") {
+      if (replyMessage === "@@FALSE@@") {
         // 回答できなかった内容を作成
         const unanseredContentText = chatRoomMessagesHistory
           .map((chatRoomMessage) => {
